@@ -1,0 +1,17 @@
+BA_KBE_GCC_COMMON.bas	stream=apc/The VBA Project/_VBA_Project/VBA/BA_KBE_GCC_COMMON	offset=114824	chars=83309
+BA_KBE_GCC_SAVEFILEBASE.bas	stream=apc/The VBA Project/_VBA_Project/VBA/BA_KBE_GCC_SAVEFILEBASE	offset=8498	chars=3836
+BDIfunctions.bas	stream=apc/The VBA Project/_VBA_Project/VBA/BDIfunctions	offset=2610	chars=1440
+WebServiceObject.bas	stream=apc/The VBA Project/_VBA_Project/VBA/WebServiceObject	offset=5042	chars=3169
+clsAttributesList.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsAttributesList	offset=12113	chars=11421
+clsBDIDoc.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsBDIDoc	offset=1286	chars=526
+clsBDIPart.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsBDIPart	offset=2463	chars=1379
+clsCollection.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsCollection	offset=8640	chars=5720
+clsExcel.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsExcel	offset=7409	chars=4918
+clsPartInfo.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsPartInfo	offset=2974	chars=1221
+clsPasswordMgr.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsPasswordMgr	offset=3827	chars=2681
+clsShellAndWait.cls	stream=apc/The VBA Project/_VBA_Project/VBA/clsShellAndWait	offset=14246	chars=10099
+frmPasswordMgr.cls	stream=apc/The VBA Project/_VBA_Project/VBA/frmPasswordMgr	offset=5906	chars=3591
+frmProgress.cls	stream=apc/The VBA Project/_VBA_Project/VBA/frmProgress	offset=5353	chars=4804
+mdlLoadSaveDrawings.bas	stream=apc/The VBA Project/_VBA_Project/VBA/mdlLoadSaveDrawings	offset=27821	chars=22624
+mdlParseJSON.bas	stream=apc/The VBA Project/_VBA_Project/VBA/mdlParseJSON	offset=15221	chars=13983
+mdlSave3DStructure.bas	stream=apc/The VBA Project/_VBA_Project/VBA/mdlSave3DStructure	offset=78630	chars=68679

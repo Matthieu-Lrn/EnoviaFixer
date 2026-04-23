@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <IsActive Value="true" Description="true to launch the script, false will display the NonActiveMessage " />
+  <NonActiveMessage Value="Ceci est un message de test." Description="Message to be displayed when " />
+  <ScriptPaths>
+    <!--List all the paths. The script will scan the list and use the first one that exist-->
+    <ScriptPath>\\aero\mtlplm\catia\V5_KBE_Tools\Production\00_KBE_Env\06_KBE_CATScript\10_EDA_HUB\Code\V1.0.5\DesignAutomationHub_V1.0.5.exe</ScriptPath>
+    <ScriptPath>I:\V5_KBE_Tools\Production\00_KBE_Env\06_KBE_CATScript\10_EDA_HUB\Code\V1.0.5\DesignAutomationHub_V1.0.5.exe</ScriptPath>
+  </ScriptPaths>
+  <Arguments>
+    <!--If the argument value is a path, fill all the possible paths in ArgumentPaths and leave Value empty. The script will scan the list and use the first one that exist-->
+    <Argument Name="/settingsfile=" Value="">
+      <ArgumentPaths>
+        <ArgumentPath>\\aero\mtlplm\catia\V5_KBE_Tools\Production\00_KBE_Env\06_KBE_CATScript\10_EDA_HUB\SettingsFiles\DesignAutomationHub_Settings_20210125.xml</ArgumentPath>
+        <ArgumentPath>I:\V5_KBE_Tools\Production\00_KBE_Env\06_KBE_CATScript\10_EDA_HUB\SettingsFiles\DesignAutomationHub_Settings_20210125.xml</ArgumentPath>
+      </ArgumentPaths>
+    </Argument>
+  </Arguments>
+</Settings>

@@ -8,10 +8,10 @@ from langflow.schema import Data
 
 
 class ExportPathComponent(Component):
-    display_name = "Export Path"
+    display_name = "LF3 Export Path"
     description = "Provides and optionally creates the CATIA extraction output folder."
     icon = "Folder"
-    name = "ExportPathComponent"
+    name = "LF3ExportPathComponent"
 
     inputs = [
         StrInput(

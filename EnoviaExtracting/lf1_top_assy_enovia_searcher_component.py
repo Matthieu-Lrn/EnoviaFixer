@@ -13,10 +13,10 @@ from lf_macro_runner_base import DEFAULT_VBA_ROOT, first_value, run_catia_macro
 
 
 class TopAssyEnoviaSearcher(Component):
-    display_name = "TopAssy Enovia Searcher"
+    display_name = "LF1 TopAssy Enovia Searcher"
     description = "Opens one top assembly in CATIA through the ENOVIA search CATVBA."
     icon = "Search"
-    name = "TopAssyEnoviaSearcher"
+    name = "LF1TopAssyEnoviaSearcher"
 
     inputs = [
         DataFrameInput(

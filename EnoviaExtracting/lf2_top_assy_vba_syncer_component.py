@@ -13,10 +13,10 @@ from lf_macro_runner_base import DEFAULT_VBA_ROOT, run_catia_macro
 
 
 class TopAssyVbaSyncer(Component):
-    display_name = "TopAssy VBA Syncer"
+    display_name = "LF2 TopAssy VBA Syncer"
     description = "Runs the automated DDP PVR Sync macro against the active ENOVIA PVR."
     icon = "RefreshCw"
-    name = "TopAssyVbaSyncer"
+    name = "LF2TopAssyVbaSyncer"
 
     inputs = [
         StrInput(name="vba_root", display_name="VBA Root", value=DEFAULT_VBA_ROOT),

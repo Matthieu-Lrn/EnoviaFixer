@@ -13,10 +13,10 @@ from lf_macro_runner_base import DEFAULT_VBA_ROOT, run_catia_macro
 
 
 class TopAssyVbaExporter(Component):
-    display_name = "TopAssy VBA Exporter"
+    display_name = "LF4 TopAssy VBA Exporter"
     description = "Runs SaveFileBase extraction for the active synced ENOVIA PVR."
     icon = "Download"
-    name = "TopAssyVbaExporter"
+    name = "LF4TopAssyVbaExporter"
 
     inputs = [
         DataInput(

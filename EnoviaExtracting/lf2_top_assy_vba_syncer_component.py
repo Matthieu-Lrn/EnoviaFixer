@@ -1,15 +1,60 @@
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+from typing import Any
 
 from langflow.custom import Component
 from langflow.io import BoolInput, DropdownInput, Output, StrInput
 from langflow.schema import Data
 
-sys.path.append(str(Path(__file__).parent))
+DEFAULT_VBA_ROOT = (
+    r"\\VADER\Apps\m170 - wp4\WP 4.2.1 Cabinet\09.   Monuments\36. MSB monument"
+    r"\14.Data Transfer\DATA TRANS 3.0\Temp-Matthieu"
+)
 
-from lf_macro_runner_base import DEFAULT_VBA_ROOT, run_catia_macro
+
+def _get_catia():
+    try:
+        import pythoncom
+        import win32com.client
+    except ImportError as exc:
+        raise RuntimeError("pywin32 is required on the Langflow/CATIA host.") from exc
+
+    pythoncom.CoInitialize()
+    try:
+        return win32com.client.GetActiveObject("CATIA.Application")
+    except Exception as exc:
+        raise RuntimeError("Could not connect to a running CATIA.Application session.") from exc
+
+
+def _run_catia_macro(
+    macro_path: str,
+    module_name: str,
+    procedure_name: str,
+    args: list[str],
+    timeout_sec: int = 1800,
+) -> dict[str, Any]:
+    catia = _get_catia()
+    result = catia.SystemService.ExecuteScript(
+        macro_path,
+        2,
+        module_name,
+        procedure_name,
+        args,
+    )
+    active_doc = ""
+    try:
+        active_doc = catia.ActiveDocument.Name
+    except Exception:
+        active_doc = ""
+    return {
+        "macro_path": macro_path,
+        "module_name": module_name,
+        "procedure_name": procedure_name,
+        "arguments": args,
+        "result": result,
+        "active_document": active_doc,
+        "timeout_sec": timeout_sec,
+    }
 
 
 class TopAssyVbaSyncer(Component):
@@ -61,7 +106,7 @@ class TopAssyVbaSyncer(Component):
 
     def build_result(self) -> Data:
         macro_path = str((self.vba_root.rstrip("\\/") + "\\" + self.macro_file))
-        payload = run_catia_macro(
+        payload = _run_catia_macro(
             macro_path=macro_path,
             module_name=self.module_name,
             procedure_name=self.procedure_name,
@@ -73,6 +118,5 @@ class TopAssyVbaSyncer(Component):
                 self.kbe_path_file,
                 self.toolbar_path,
             ],
-            timeout_sec=1800,
         )
         return Data(data=payload)

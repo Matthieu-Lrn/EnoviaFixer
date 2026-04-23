@@ -1,15 +1,91 @@
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+import time
+from typing import Any
 
 from langflow.custom import Component
 from langflow.io import BoolInput, DataFrameInput, IntInput, Output, StrInput
 from langflow.schema import Data
 
-sys.path.append(str(Path(__file__).parent))
+DEFAULT_VBA_ROOT = (
+    r"\\VADER\Apps\m170 - wp4\WP 4.2.1 Cabinet\09.   Monuments\36. MSB monument"
+    r"\14.Data Transfer\DATA TRANS 3.0\Temp-Matthieu"
+)
 
-from lf_macro_runner_base import DEFAULT_VBA_ROOT, first_value, run_catia_macro
+
+def _get_catia():
+    try:
+        import pythoncom
+        import win32com.client
+    except ImportError as exc:
+        raise RuntimeError("pywin32 is required on the Langflow/CATIA host.") from exc
+
+    pythoncom.CoInitialize()
+    try:
+        return win32com.client.GetActiveObject("CATIA.Application")
+    except Exception as exc:
+        raise RuntimeError("Could not connect to a running CATIA.Application session.") from exc
+
+
+def _run_catia_macro(
+    macro_path: str,
+    module_name: str,
+    procedure_name: str,
+    args: list[str],
+    wait_active_document: bool = False,
+    timeout_sec: int = 900,
+) -> dict[str, Any]:
+    catia = _get_catia()
+
+    before_doc = ""
+    try:
+        before_doc = catia.ActiveDocument.Name
+    except Exception:
+        before_doc = ""
+
+    result = catia.SystemService.ExecuteScript(
+        macro_path,
+        2,
+        module_name,
+        procedure_name,
+        args,
+    )
+
+    if wait_active_document:
+        deadline = time.time() + timeout_sec
+        while time.time() < deadline:
+            try:
+                active_name = catia.ActiveDocument.Name
+                if active_name and active_name != "CATImmSearchDoc" and active_name != before_doc:
+                    break
+            except Exception:
+                pass
+            time.sleep(1)
+
+    try:
+        active_doc = catia.ActiveDocument.Name
+    except Exception:
+        active_doc = ""
+
+    return {
+        "macro_path": macro_path,
+        "module_name": module_name,
+        "procedure_name": procedure_name,
+        "arguments": args,
+        "result": result,
+        "active_document": active_doc,
+    }
+
+
+def _first_value(row: Any, *names: str, default: str = "") -> str:
+    if row is None:
+        return default
+    if hasattr(row, "to_dict"):
+        row = row.to_dict()
+    for name in names:
+        if isinstance(row, dict) and name in row and row[name] not in (None, ""):
+            return str(row[name])
+    return default
 
 
 class TopAssyEnoviaSearcher(Component):
@@ -83,14 +159,14 @@ class TopAssyEnoviaSearcher(Component):
             if df is None:
                 raise ValueError("Provide either Manual Top Assembly or a Top Assemblies dataframe.")
             row = df.iloc[int(self.row_index)]
-            top_assy = first_value(row, "top_assembly", "TopAssembly", "Top Assembly", "part_number", "Part Number")
-            revision = first_value(row, "revision", "Revision", "rev", "Rev", "expected_revision", "Expected Revision")
+            top_assy = _first_value(row, "top_assembly", "TopAssembly", "Top Assembly", "part_number", "Part Number")
+            revision = _first_value(row, "revision", "Revision", "rev", "Rev", "expected_revision", "Expected Revision")
 
         if not top_assy:
             raise ValueError("Could not find a top assembly value in the selected row.")
 
         macro_path = str((self.vba_root.rstrip("\\/") + "\\" + self.macro_file))
-        payload = run_catia_macro(
+        payload = _run_catia_macro(
             macro_path=macro_path,
             module_name=self.module_name,
             procedure_name=self.procedure_name,

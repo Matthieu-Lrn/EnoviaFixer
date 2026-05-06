@@ -32,8 +32,13 @@ def get_catia():
     pythoncom.CoInitialize()
     try:
         return win32.GetActiveObject("CATIA.Application")
-    except Exception as exc:
-        raise RuntimeError("Could not connect to a running CATIA.Application session.") from exc
+    except Exception:
+        try:
+            return win32.Dispatch("CATIA.Application")
+        except Exception as exc:
+            raise RuntimeError(
+                "Could not connect to CATIA.Application with GetActiveObject or Dispatch."
+            ) from exc
 
 
 def execute_macro(

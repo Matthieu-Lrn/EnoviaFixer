@@ -8,10 +8,10 @@ from langflow.schema import Data
 
 
 class ExportPathComponent(Component):
-    display_name = "LF3 Export Path"
-    description = "Provides and optionally creates the CATIA extraction output folder."
+    display_name = "LF4 PVRSync Export Path"
+    description = "Provides and optionally creates the PVRSync extraction output folder."
     icon = "Folder"
-    name = "LF3ExportPathComponent"
+    name = "LF4PvrSyncExportPathComponent"
 
     inputs = [
         StrInput(
